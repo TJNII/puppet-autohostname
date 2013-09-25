@@ -2,7 +2,7 @@ class autohostname (
   $hostname_prefix,
   $hostname_suffix,
   ) {
-  
+    
   package { "uuid-runtime":
     ensure => installed,
   }
@@ -13,11 +13,17 @@ class autohostname (
     source  => 'puppet:///modules/autohostname/usr/sbin/autohostname.sh',
     require => Package["uuid-runtime"],
   }
-
+  
   file { '/etc/init.d/autohostname':
     ensure  => file,
     mode    => 755,
     content => template("autohostname/etc/init.d/autohostname.erb"),
   }
-      
+  
+  service { 'autohostname':
+    ensure  => running,
+    enable  => true,
+    require => [ File["/usr/sbin/autohostname.sh"],
+                 File["/etc/init.d/autohostname"] ]
+  }      
 }

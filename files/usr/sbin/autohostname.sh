@@ -96,7 +96,7 @@ sed -e "s|\([[:space:]]\)[^[:space:]]\+\.${2}|\1${newHostname}|g" /etc/hosts -i
 hostname $newHostname
 
 # Write mapping
-echo "# USB Stick ID mapping file" > $mapfile
+echo "# autohostname USB Stick ID mapping file" > $mapfile
 echo "# This is not a standard config file." >> $mapfile
 echo "$devID" >> $mapfile
 
