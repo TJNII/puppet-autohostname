@@ -1,0 +1,25 @@
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:          autohostname
+# Required-Start:    $local_fs $time
+# Required-Stop:     $local_fs
+# X-Start-Before:    puppet ssh slim
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+### END INIT INFO
+
+case "$1" in
+    start)
+	# The following arguments are set via puppet
+	/usr/sbin/autohostname.sh <%= hostname_prefix %> <%= hostname_suffix %>
+	exit $?
+	;;
+    stop|restart|force-reload|status)
+        # nothing, just to keep update-rc.d happy (see debian #630732)
+	echo "This option is unimplemented"
+        ;;
+    *)
+        echo "Usage: $SCRIPTNAME {start|stop|status|restart|force-reload}" >&2
+        exit 3
+        ;;
+esac
