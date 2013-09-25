@@ -7,12 +7,12 @@ Intended for USB stick installs that will be cloned with dd.  Uses the disk id
 Uses a prefixed UUID for the hostname.
 
 Requirements
-============
+------------
 Only supports Debian at this time.  Will fail, possibly silently, on other distros.
 Intended to be run on a install using slim.
 
 Changes Made
-============
+------------
 
 * Replaces /etc/hostname
 * Replaces /etc/mailname
