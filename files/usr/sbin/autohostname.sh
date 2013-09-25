@@ -16,25 +16,25 @@ mapfile="/etc/rootdev_hostname_map"
 
 # Check arguments
 if [ -z "$1" ]; then
-    echo "$0: ERROR: Hostname prefix required"
+    echo "autohostname: ERROR: Hostname prefix required"
     exit 1
 fi
 if [ -z "$2" ]; then
-    echo "$0: ERROR: Domain name required"
+    echo "autohostname: ERROR: Domain name required"
     exit 1
 fi
 
 # Get root device
 rootDev=`pvs | grep cpstick | awk '{print $1}' | sed -e 's|[0-9]$||' -e 's|/dev/||'`
 if [ -z $(echo "$rootDev" | grep "^[a-z]\+$" ) ]; then
-    echo "$0: ERROR: Error determining root device. Got: \"${rootDev}\""
+    echo "autohostname: ERROR: Error determining root device. Got: \"${rootDev}\""
     exit 1
 fi
 
 # Get serial number
 devID=`ls /dev/disk/by-id/ -l | grep "$rootDev$" | awk '{print $9}'`
 if [ -z $devID ]; then
-    echo "$0: ERROR: Unable to determine root device ID"
+    echo "autohostname: ERROR: Unable to determine root device ID"
     exit 1
 fi
 
@@ -42,18 +42,18 @@ fi
 if [ -f $mapfile ]; then
     oldDevID=`grep -v "^#" $mapfile`
     if [ $(echo "$oldDevID" | wc -l) -ne 1 ]; then
-	echo "$0: ERROR: Parse error on $mapfile"
+	echo "autohostname: ERROR: Parse error on $mapfile"
 	exit 1
     fi
 
     if [ "$devID" == "$oldDevID" ]; then
-	echo "$0: Hostname OK"
+	echo "autohostname: Hostname OK"
 	exit 0
     fi
 fi
 
-echo "$0: Current hostname does not match mapping or mapping missing."
-echo "$0: WARNING: CHANGING HOSTNAME."
+echo "autohostname: Current hostname does not match mapping or mapping missing."
+echo "autohostname: WARNING: CHANGING HOSTNAME."
 
 # Stop Puppet & sshd
 /etc/init.d/puppet stop 2>/dev/null /dev/null
@@ -61,12 +61,12 @@ echo "$0: WARNING: CHANGING HOSTNAME."
 
 /etc/init.d/puppet status 2>/dev/null /dev/null
 if [ $? -eq 0 ]; then
-    echo "$0: ERROR: Puppet failed to stop"
+    echo "autohostname: ERROR: Puppet failed to stop"
     exit 1
 fi
 /etc/init.d/ssh status 2>/dev/null /dev/null
 if [ $? -eq 0 ]; then
-    echo "$0: ERROR: SSH failed to stop"
+    echo "autohostname: ERROR: SSH failed to stop"
     exit 1
 fi
 
@@ -78,7 +78,7 @@ rm /etc/ssh/ssh_host_* -f
 
 # Change hostname
 newHostname="$1-$(uuidgen -t).$2"
-echo "$0: New hostname: $newHostname"
+echo "autohostname: New hostname: $newHostname"
 
 # Overwrite /etc/hostname and /etc/mailname
 echo $newHostname > /etc/hostname
