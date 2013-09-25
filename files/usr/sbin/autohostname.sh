@@ -85,7 +85,7 @@ echo $newHostname > /etc/hostname
 echo $newHostname > /etc/mailname
 
 # Correct other files with sed
-sed -e "s|$(hostname -f)|${newHostname}|g" /etc/hosts
+sed -e "s|$(hostname -f)|${newHostname}|g" /etc/hosts -i
 
 # Motd will be fixed by puppet, not fiddling with LVM
 # No other files should (*should*) need mods.
