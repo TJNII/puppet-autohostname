@@ -18,5 +18,5 @@ Changes Made
 * Replaces /etc/mailname
 * Updates /etc/hosts via sed regex
 * Removes /var/lib/puppet to force puppet cert regeneration
-* Removes and regenerates sshd keys
+* Removes and regenerates sshd keys (Debian specific call)
 * Reboots server on change to ensure change is fully propagated and to ensure slim/dbus/consolekit/policykit react properly.
