@@ -13,7 +13,7 @@ case "$1" in
 	# Pull prefix from local seed file, if present
 	if [ -f "<%= hostname_prefix_file %>" ]; then
 	    myprefix=`grep "^[[:alnum:]]\+$" "<%= hostname_prefix_file %>" | head -n 1`
-	    if [ -n "$myprefix" ]; then
+	    if [ -z "$myprefix" ]; then
 		echo "AUTOHOSTNAME: Warning: Invalid prefix file"
 		myprefix="<%= hostname_prefix_default %>"
 	    fi
