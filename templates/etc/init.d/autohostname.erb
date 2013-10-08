@@ -11,7 +11,7 @@
 case "$1" in
     start)
 	# The following arguments are set via puppet
-	/usr/sbin/autohostname.sh <%= hostname_prefix %> <%= hostname_suffix %>
+	/usr/sbin/autohostname.sh <%= hostname_prefix %> <%= hostname_suffix %> <%= vgs_search_string %>
 	exit $?
 	;;
     stop|restart|force-reload|status)

@@ -1,6 +1,7 @@
 class autohostname (
   $hostname_prefix,
   $hostname_suffix,
+  $vgs_search_string,
   ) {
     
   package { "uuid-runtime":

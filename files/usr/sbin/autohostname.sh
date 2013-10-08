@@ -11,6 +11,7 @@
 # ARGUMENTS:
 # $1: Hostname Prefix
 # $2: Domain name
+# $3: vgs search string
 
 mapfile="/etc/rootdev_hostname_map"
 
@@ -23,9 +24,13 @@ if [ -z "$2" ]; then
     echo "autohostname: ERROR: Domain name required"
     exit 1
 fi
+if [ -z "$3" ]; then
+    echo "autohostname: ERROR: vgs search string required"
+    exit 1
+fi
 
 # Get root device
-rootDev=`pvs | grep cpstick | awk '{print $1}' | sed -e 's|[0-9]$||' -e 's|/dev/||'`
+rootDev=`pvs | grep "$3" | awk '{print $1}' | sed -e 's|[0-9]$||' -e 's|/dev/||'`
 if [ -z $(echo "$rootDev" | grep "^[a-z]\+$" ) ]; then
     echo "autohostname: ERROR: Error determining root device. Got: \"${rootDev}\""
     exit 1
