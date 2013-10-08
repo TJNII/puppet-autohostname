@@ -1,7 +1,8 @@
 class autohostname (
-  $hostname_prefix,
   $hostname_suffix,
   $vgs_search_string,
+  $hostname_prefix_default,
+  $hostname_prefix_file = "/etc/autohostname_prefix",
   ) {
     
   package { "uuid-runtime":

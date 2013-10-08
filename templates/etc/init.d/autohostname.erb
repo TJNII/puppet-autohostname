@@ -10,8 +10,19 @@
 
 case "$1" in
     start)
+	# Pull prefix from local seed file, if present
+	if [ -f "<%= hostname_prefix_file %>" ]; then
+	    myprefix=`grep "^[[:alnum:]]\+$" "<%= hostname_prefix_file %>" | head -n 1`
+	    if [ -n "$myprefix" ]; then
+		echo "AUTOHOSTNAME: Warning: Invalid prefix file"
+		myprefix="<%= hostname_prefix_default %>"
+	    fi
+	else
+	    myprefix="<%= hostname_prefix_default %>"
+	fi
+
 	# The following arguments are set via puppet
-	/usr/sbin/autohostname.sh <%= hostname_prefix %> <%= hostname_suffix %> <%= vgs_search_string %>
+	/usr/sbin/autohostname.sh $myprefix <%= hostname_suffix %> <%= vgs_search_string %>
 	exit $?
 	;;
     stop|restart|force-reload|status)
